@@ -1,0 +1,32 @@
+jenkins:
+  systemMessage: "Jenkins configured as code"
+  numExecutors: 2            # lab only: no agents here. Production controller = 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "${ADMIN_PASS}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: "nexus-ci"
+              username: "jenkins-ci"
+              password: "${NEXUS_PASS}"
+unclassified:
+  globalLibraries:
+    libraries:
+      - name: "jenkins-shared-lib"
+        defaultVersion: "main"
+        implicit: false
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "https://github.com/YOUR_USER/jenkins-shared-lib.git"
